@@ -59,6 +59,11 @@ router.get("/task/:taskId", auth, async (req, res) => {
     res.json(files);
 });
 
+router.get("/reqdownload/:id", async (req, res) => {
+    const request = await Request.findById(req.params.id);
+    res.download(request.filePath, request.fileName);
+});
+
 router.get("/download/:id", async (req, res) => {
     const file = await File.findById(req.params.id);
     res.download(file.path, file.name);

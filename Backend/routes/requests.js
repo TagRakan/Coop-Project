@@ -5,7 +5,7 @@ import auth from "../authMiddleware.js";
 const router = express.Router();
 
 router.get("/", auth, async (req, res) => {
-    const requests = await Request.find({ student: req.user.id });
+    const requests = await Request.find({ status: "Pending" });
     res.json(requests);
 });
 

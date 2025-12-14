@@ -8,6 +8,7 @@ export default mongoose.model(
         taskName: String,
         fileName: String,
         filePath: String,
+        studentName: String,
         status: {
             type: String,
             enum: ["Pending", "Approved", "Rejected"],
