@@ -1,0 +1,55 @@
+import { useDispatch, useSelector } from "react-redux";
+import { createTask, fetchTasks } from "./taskSlice";
+import { useEffect, useState } from "react";
+import {Link} from "react-router";
+
+function Tasks() {
+    const dispatch = useDispatch();
+    const { tasks } = useSelector((state) => state.tasks);
+    const { user } = useSelector((state) => state.auth);
+
+    const [form, setForm] = useState({ title: "", description: "" });
+
+    useEffect(() => {
+        dispatch(fetchTasks());
+    }, []);
+
+    return (
+        <div className="flex flex-row flex-wrap gap-4 p-3 overflow-x-auto">
+            {user?.role === "Supervisor" && (
+                <div className="w-full border-b border-sg p-3 flex gap-x-2">
+                    <input
+                        className="bg-gray-950 border border-sg text-gray-300 p-1"
+                        placeholder="Title"
+                        onChange={(e) => setForm({ ...form, title: e.target.value })}
+                    />
+                    <input
+                        className="bg-gray-950 border border-sg text-gray-300 p-1"
+                        placeholder="Description"
+                        onChange={(e) => setForm({ ...form, description: e.target.value })}
+                    />
+                    <div
+                        className="taskb"
+                        onClick={() => dispatch(createTask(form))}
+                    >
+                        Create Task
+                    </div>
+                </div>
+            )}
+
+            {tasks.map((task) => (
+                <Link
+                    key={task._id}
+                    className="bg-gray-900 rounded-2xl w-101 h-52 cursor-pointer hover:bg-gray-800"
+                to={'/task/' + task._id}>
+                    <p className="text-xl font-bold border-b border-sg p-1 text-gray-500 text-center mt-2">
+                        {task.title}
+                    </p>
+                    <p className="text-gray-400 text-center m-3">{task.description}</p>
+                </Link>
+            ))}
+        </div>
+    );
+}
+
+export default Tasks;

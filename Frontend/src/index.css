@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(3,7,18);
+
+}
+
+@theme {
+  --color-sg: rgba(123, 123, 123, 0.22);
+}
+
+@layer components{
+  .mpage{
+    @apply my-22 mx-62 flex flex-row
+  }
+  .mcontainer{
+    @apply h-162 w-screen max-w-screen border border-sg rounded-2xl border-l-0
+  }
+  .navbutton{
+    @apply font-bold text-2xl text-gray-400 hover:text-blue-400 h-fit;
+  }
+  .navlogout{
+    @apply font-bold text-2xl text-gray-400 hover:text-red-900 h-fit mt-auto mb-9;
+  }
+  .taskb{
+    @apply border rounded-lg text-lg text-gray-200 p-2 cursor-pointer select-none hover:bg-gray-900 active:bg-gray-800
+  }
+}

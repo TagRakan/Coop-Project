@@ -1,0 +1,36 @@
+import express from "express";
+import User from "../models/User.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+const router = express.Router();
+
+router.post("/register", async (req, res) => {
+    const hashed = await bcrypt.hash(req.body.password, 10);
+
+    await User.create({
+        name: req.body.name,
+        email: req.body.email,
+        password: hashed,
+        role: req.body.role,
+    });
+
+    res.sendStatus(201);
+});
+
+router.post("/login", async (req, res) => {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return res.sendStatus(401);
+
+    const ok = await bcrypt.compare(req.body.password, user.password);
+    if (!ok) return res.sendStatus(401);
+
+    const token = jwt.sign(
+        { id: user._id, role: user.role },
+        process.env.JWT_SECRET
+    );
+
+    res.json({ user, token });
+});
+
+export default router;
