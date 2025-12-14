@@ -51,6 +51,18 @@ router.post("/upload/:taskId", auth, upload.single("file"), async (req, res) => 
         uploadedByName: username.name,
     });
 
+    const rolesToSend = ["Supervisor", "Employee", "Student"];
+    const usersToSend = await User.find({ role: { $in: rolesToSend } }).exec();
+    if (usersToSend.length !== 0) {
+        for (const auser of usersToSend) {
+            await Notification.create({
+                userId: auser._id,
+                message: "The file " + req.file.originalname + " uploaded within " + xTask.title,
+            });
+        }
+
+    }
+
     res.json(file);
 });
 
@@ -70,12 +82,11 @@ router.get("/download/:id", async (req, res) => {
 });
 
 router.post("/request/:id", auth, async (req, res) => {
-    console.log(req.params.id);
     if (req.user.role !== "Supervisor") return res.sendStatus(403);
-    console.log(req.params.id);
 
     const request = await Request.findById(req.params.id);
-
+    request.status = req.body.status;
+    await request.save();
 
     if (req.body.status === "Approved") {
         await File.create({
@@ -85,8 +96,6 @@ router.post("/request/:id", auth, async (req, res) => {
             uploadedBy: request.student,
             uploadedByName: request.studentName,
         });
-        request.status = 'Approved';
-        await request.save();
     }
 
 

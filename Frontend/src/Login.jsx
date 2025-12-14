@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { login } from "./authSlice";
 import { Navigate, Link } from "react-router";
 import { useState } from "react";
+import Message from "./Message.jsx";
 
 function Login() {
     const { token, loading } = useSelector((state) => state.auth);
@@ -11,6 +12,9 @@ function Login() {
     if (token) return <Navigate to="/" replace />;
 
     return (
+        <>
+            <Message/>
+
         <div className="flex items-center justify-center h-screen">
             <div className="bg-gray-900 p-6 rounded-2xl w-96">
                 <h1 className="text-gray-400 text-2xl text-center mb-4">Login</h1>
@@ -43,6 +47,7 @@ function Login() {
                 </Link>
             </div>
         </div>
+        </>
     );
 }
 

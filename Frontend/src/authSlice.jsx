@@ -1,15 +1,39 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { sendMessage } from "./messageSlice";
 
 const API = "http://localhost:5000/auth";
 
 export const login = createAsyncThunk(
     "auth/login",
-    async (form) => {
-        const res = await axios.post(`${API}/login`, form);
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-        return res.data;
+    async (form, thunkAPI) => {
+        try {
+            const res = await axios.post(`${API}/login`, form);
+
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
+
+            thunkAPI.dispatch(
+                sendMessage({
+                    message: "Login successful",
+                    type: "success",
+                })
+            );
+
+            return res.data;
+        } catch (err) {
+            thunkAPI.dispatch(
+                sendMessage({
+                    message:
+                        err.response?.data?.message || "Login failed. Try again.",
+                    type: "error",
+                })
+            );
+
+            return thunkAPI.rejectWithValue(
+                err.response?.data || "Login failed"
+            );
+        }
     }
 );
 

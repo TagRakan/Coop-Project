@@ -19,15 +19,28 @@ export const createTask = createAsyncThunk("tasks/create", async (data, { getSta
 
 const taskSlice = createSlice({
     name: "tasks",
-    initialState: { tasks: [] },
+    initialState: { tasks: [], isLoading: false, },
     extraReducers: (builder) => {
         builder
+            .addCase(fetchTasks.pending, (state) => {
+                state.isLoading = true;
+            })
             .addCase(fetchTasks.fulfilled, (state, action) => {
+                state.isLoading = false;
                 state.tasks = action.payload;
-                console.log(state.tasks);
+            })
+            .addCase(fetchTasks.rejected, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(createTask.pending, (state) => {
+                state.isLoading = true;
             })
             .addCase(createTask.fulfilled, (state, action) => {
                 state.tasks.push(action.payload);
+                state.isLoading = false;
+            })
+            .addCase(createTask.rejected, (state) => {
+                state.isLoading = false;
             });
     },
 });

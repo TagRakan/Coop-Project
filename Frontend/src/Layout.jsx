@@ -2,6 +2,7 @@ import { Outlet, Navigate } from "react-router";
 import { useSelector } from "react-redux";
 import Nav from "./Nav.jsx";
 import "./index.css";
+import Message from "./Message.jsx";
 
 function Layout() {
     const { token } = useSelector((state) => state.auth);
@@ -15,6 +16,7 @@ function Layout() {
             <Nav />
             <div className="mcontainer">
                 <Outlet />
+                <Message />
             </div>
         </div>
     );
