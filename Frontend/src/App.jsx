@@ -11,9 +11,17 @@ function App() {
     const [requests, setRequests] = useState([]);
 
     const handleApprove = async (reqId) => {
-        await axios.delete(`http://localhost:5000/request/${reqId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+        const requestBody = { status: "Approved" };
+        const res = await axios.post(
+            `http://localhost:5000/files/request/${reqId}`,
+            requestBody,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+        );
+        console.log(res);
         updateRequests();
     }
     const updateRequests = () => {
