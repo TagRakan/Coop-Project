@@ -28,4 +28,7 @@
   .taskb{
     @apply border rounded-lg text-lg text-gray-200 p-2 cursor-pointer select-none hover:bg-gray-900 active:bg-gray-800
   }
+  .taskb2{
+    @apply border rounded-lg text-lg text-gray-200 p-2 cursor-pointer select-none border-sg bg-gray-800
+  }
 }

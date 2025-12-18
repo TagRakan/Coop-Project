@@ -1,9 +1,0 @@
-git add --a
-
-git config --global user.email "rakantoss@gmail.com"
-git config --global user.name "TagRakan"
-
-git commit -m "message"
-git push origin
-
-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

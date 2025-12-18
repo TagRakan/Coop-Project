@@ -3,10 +3,11 @@ import { uploadFile, fetchFiles } from "./fileSlice";
 import { useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import axios from "axios";
+import { sendMessage } from "./messageSlice";
 
 function TaskView() {
     const dispatch = useDispatch();
-    const { files } = useSelector((state) => state.files);
+    const { files, isLoading } = useSelector((state) => state.files);
     const { user, token } = useSelector((state) => state.auth);
     const { tasks } = useSelector((state) => state.tasks);
     const { id } = useParams();
@@ -15,12 +16,35 @@ function TaskView() {
     }, [id]);
 
     const handleDelete = async (fileId) => {
-        await axios.delete(`http://localhost:5000/files/${fileId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        dispatch(fetchFiles(id));
+        try {
+            await axios.delete(`http://localhost:5000/files/${fileId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            dispatch(sendMessage({
+                message: "File deleted successfully",
+                type: "success",
+            }));
+
+            dispatch(fetchFiles(id));
+
+        } catch (error) {
+            dispatch(sendMessage({
+                message: error.response?.data?.message || "Failed to delete file. Please try again.",
+                type: "error",
+            }));
+
+            console.error("Delete error:", error);
+        }
     };
 
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-64 text-gray-400">
+                Loading tasks...
+            </div>
+        );
+    }
     return (
         <div className="flex flex-col max-h-full items-center my-2 p-1 overflow-x-auto">
             <h1 className="text-gray-500 text-center text-2xl">{tasks.find(task => task._id === id)?.title}</h1>
@@ -28,7 +52,7 @@ function TaskView() {
             <div className="flex flex-row gap-x-3 border-b border-sg mb-5 w-full p-3">
                 <input
                     type="file"
-                    className="text-gray-300"
+                    className="text-gray-300 cursor-pointer bg-gray-900 hover:bg-gray-800 active:bg-gray-700 border border-gray-500 text-center p-3 rounded-3xl"
                     onChange={(e) =>
                         dispatch(uploadFile({ taskId: id, file: e.target.files[0] }))
                     }
@@ -61,7 +85,7 @@ function TaskView() {
                         Download File
                     </div>
 
-                    {(user.role === "Supervisor" || user._id === file.uploadedBy) && (
+                    {(user.role === "Supervisor" || (user._id === file.uploadedBy && user.role !== "Student")) && (
                         <div
                             className="border-red-700 border rounded-lg text-gray-300 p-1 cursor-pointer select-none hover:bg-red-950 active:bg-red-900"
                             onClick={() => handleDelete(file._id)}

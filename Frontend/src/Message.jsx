@@ -3,7 +3,8 @@ import { closeMessage } from "./messageSlice";
 
 function Message() {
     const dispatch = useDispatch();
-    const { open, message, type } = useSelector((state) => state.message);
+    const { open, message, message2, type } = useSelector((state) => state.message);
+    const { user } = useSelector((state) => state.auth);
 
     if (!open) return null;
 
@@ -16,7 +17,7 @@ function Message() {
         `}
             >
                 <div className="flex items-center gap-4">
-                    <span className="font-bold">{message}</span>
+                    <span className="font-bold">{message2 && (message2 !== "" && user.role === "Student") ? message2 : message}</span>
                     <button
                         onClick={() => dispatch(closeMessage())}
                         className="font-bold hover:opacity-70 active:opacity-50 cursor-pointer"

@@ -12,6 +12,7 @@ const messageSlice = createSlice({
     reducers: {
         openMessage: (state, action) => {
             state.message = action.payload.message;
+            state.message2 = action.payload?.message2;
             state.type = action.payload.type || "error";
             state.open = true;
         },
@@ -32,7 +33,7 @@ export const sendMessage = (payload) => (dispatch) => {
     messageTimeout = setTimeout(() => {
         dispatch(messageSlice.actions.closeMessage());
         messageTimeout = null;
-    }, 10000);
+    }, 3000);
 };
 
 export const { openMessage, closeMessage } = messageSlice.actions;

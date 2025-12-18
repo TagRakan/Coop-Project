@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { useDispatch } from "react-redux";
 import { logout } from "./authSlice";
 import { useSelector } from "react-redux";
+import { sendMessage } from "./messageSlice.jsx";
 
 function Nav() {
     const dispatch = useDispatch();
@@ -27,7 +28,15 @@ function Nav() {
 
             <div
                 className="navlogout cursor-pointer"
-                onClick={() => dispatch(logout())}
+                onClick={() => {
+                    dispatch(logout());
+                    dispatch(sendMessage({
+                        message: "Logged out successfully!",
+                        type: "success"
+                    }));
+                }}
+
+
             >
                 Logout
             </div>

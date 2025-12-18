@@ -4,11 +4,18 @@ import { fetchNotifications } from "./notificationSlice";
 
 function Notifications() {
     const dispatch = useDispatch();
-    const { notifications } = useSelector((state) => state.notifications);
+    const { notifications, isLoading } = useSelector((state) => state.notifications);
 
     useEffect(() => {
         dispatch(fetchNotifications(true));
     }, []);
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-64 text-gray-400">
+                Loading...
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col-reverse gap-y-2 p-3">
