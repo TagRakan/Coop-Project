@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux"; // Added useDispatch
 import { Navigate } from "react-router";
 import { sendMessage } from "./messageSlice";
-import Message from "./Message.jsx"; // Import your message action
+import Message from "./Message.jsx";
 
 function Register() {
     const navigate = useNavigate();
@@ -75,15 +75,6 @@ function Register() {
                     placeholder="Password"
                     onChange={(e) => setForm({ ...form, password: e.target.value })}
                 />
-                <select
-                    className="w-full p-2 mb-4 bg-gray-950 border border-sg text-gray-300 rounded"
-                    value={form.role}
-                    onChange={(e) => setForm({ ...form, role: e.target.value })}
-                >
-                    <option value="Student">Student</option>
-                    <option value="Employee">Employee</option>
-                    <option value="Supervisor">Supervisor</option>
-                </select>
 
                 <div
                     className={`text-center mb-3 cursor-pointer ${loading ? 'taskb2' : 'taskb'}`}

@@ -3,7 +3,7 @@ import { login } from "./authSlice";
 import { Navigate, Link } from "react-router";
 import { useState } from "react";
 import Message from "./Message.jsx";
-import { sendMessage } from "./messageSlice"; // Import your message action
+import { sendMessage } from "./messageSlice";
 
 function Login() {
     const { token, loading } = useSelector((state) => state.auth);
@@ -24,7 +24,6 @@ function Login() {
             return dispatch(sendMessage({ message: "Invalid email format.", type: "error" }));
         }
 
-        // If valid, proceed to thunk
         dispatch(login(form));
     };
 

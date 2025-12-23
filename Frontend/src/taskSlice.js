@@ -10,7 +10,6 @@ export const fetchTasks = createAsyncThunk(
             const res = await axios.get("http://localhost:5000/tasks", {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            // We usually don't send a success message for "fetching" to avoid pop-up fatigue
             return res.data;
         } catch (error) {
             dispatch(sendMessage({

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 let messageTimeout = null;
 const initialState = {
     message: "",
-    type: "error", // success | error
+    type: "error", // success - error
     open: false,
 };
 

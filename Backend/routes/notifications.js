@@ -15,7 +15,7 @@ router.patch("/", auth, async (req, res) => {
         const result = await Notification.updateMany(
             {
                 userId: userId,
-                read: false // Optional: only update unread notifications for efficiency
+                read: false
             },
             {
                 $set: { read: true }

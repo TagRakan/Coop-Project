@@ -10,7 +10,6 @@ router.get("/", auth, async (req, res) => {
 });
 
 router.post("/", auth, async (req, res) => {
-    /* Validation: Supervisor check and required title/description */
     if (req.user.role !== "Supervisor") return res.sendStatus(403);
     if (!req.body.title || !req.body.description) return res.status(400).json({ message: "Title and description are required" });
 
