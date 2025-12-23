@@ -7,8 +7,8 @@ const router = express.Router();
 
 router.post("/register", async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
-        if (!name || !email || !password || !role) return res.status(400).json({ message: "All fields are required" });
+        const { name, email, password } = req.body;
+        if (!name || !email || !password) return res.status(400).json({ message: "All fields are required" });
 
         if (/\d/.test(name)) {
             return res.status(400).json({ message: "Name cannot contain numbers" });
@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
             name: normalizedName,
             email: normalizedEmail,
             password: hashed,
-            role: role,
+            role: "Student",
         });
 
         res.sendStatus(201);

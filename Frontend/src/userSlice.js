@@ -1,4 +1,3 @@
-// src/userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -13,7 +12,6 @@ const initialState = {
     error: null
 };
 
-// Async thunks
 export const loginUser = createAsyncThunk('user/login', async (credentials, { rejectWithValue }) => {
     try {
         const res = await axios.post(`${API_URL}/login`, credentials);
